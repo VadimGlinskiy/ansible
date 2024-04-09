@@ -1,0 +1,13 @@
+---
+#Установка веб-севера apache на RedHat
+- name: Install default apache webserver
+  hosts: cent
+  become: yes
+
+  tasks:
+    
+    - name: Install Apache Webserver
+      yum: name=httpd state=present
+
+    - name: Starting apache service and enable auto-boot
+      service: name=httpd state=started enabled=yes

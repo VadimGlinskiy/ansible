@@ -1,0 +1,27 @@
+---
+# Установка сервера, копирование туда .html файла
+# использование nofify и handlers
+- name: Install apache and upload my file
+  hosts: cent
+  become: yes
+
+  vars:
+    source_file: ../index.html
+    destin_file: /var/www/html
+
+  tasks:
+    - name: Install webserver 
+      yum: name=httpd state=present
+
+    - name: Copy .html file to server
+      copy: src={{ source_file }} dest={{ destin_file }} mode=0555
+      notify: Restart server
+
+    - name: Start service and boot
+      service: name=httpd state=started enabled=yes
+
+
+
+  handlers:
+    - name: Restart server
+      service: name=httpd state=reloaded

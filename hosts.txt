@@ -1,0 +1,4 @@
+[PROD]
+cent ansible_host=158.160.107.235
+[STAGING]
+ubuntu ansible_host=51.250.76.69

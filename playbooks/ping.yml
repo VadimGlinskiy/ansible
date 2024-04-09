@@ -1,0 +1,10 @@
+---
+#Использование простейшего модуля ping
+- name: Test ping
+  hosts: all
+  become: yes
+
+  tasks:
+    
+  - name: Простейший модуль ping
+    ping:
