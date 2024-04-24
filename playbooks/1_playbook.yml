@@ -1,10 +1,10 @@
 ---
 #Использование простейшего модуля ping
-- name: Test ping
+- name: Тестирования доступности узлов
   hosts: all
   become: yes
 
   tasks:
     
-  - name: Простейший модуль ping
+  - name: Тест подключения
     ping:
