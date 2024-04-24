@@ -1,0 +1,25 @@
+---
+#Установка веб сервера, использование переменных, модуля copy
+#Использование handlers(вызывается через notify:)
+- name: Установка сервера и загрузка .html странички
+  hosts: PROD
+  become: yes
+
+  vars:
+    source_file: ../MyWebSite/index.html
+    destin_file: /var/www/html/
+  tasks:
+    - name: Установка веб-сервера(apache)
+      yum: name=httpd state=present
+
+    - name: Копирование странички на сервер
+      copy: src={{ source_file }} dest={{ destin_file }} mode=0555
+      notify: Перезапуск сервера
+
+    - name: Запуск сервера
+      service: name=httpd state=started enabled=yes
+
+
+  handlers:
+  - name: Перезапуск сервера
+    service: name=httpd state=restarted
