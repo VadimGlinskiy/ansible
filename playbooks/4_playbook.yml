@@ -22,4 +22,8 @@
     - set_fact: full_message="{{ message1 }} {{ message2 }}; язык {{ language }}"
 
     - debug:
-          var: full_message
+        var: full_message
+
+    - debug:
+        var: ansible_distribution
+         
