@@ -12,3 +12,6 @@
     - name: Печатаем переменную secret
       debug:
         var: secret
+  
+    - debug:
+        msg: "Секретное слово: {{ secret }}"
