@@ -26,4 +26,9 @@
 
     - debug:
         var: ansible_distribution
-         
+
+    - shell: uptime
+      register: uptime_results
+        
+    - debug:
+        var: uptime_results.stdout
