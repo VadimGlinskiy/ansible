@@ -15,3 +15,11 @@
   
     - debug:
         msg: "Секретное слово: {{ secret }}"
+
+    - debug:
+        msg: "Языковые настройки сервера: --->{{ language }}<---"
+
+    - set_fact: full_message="{{ message1 }} {{ message2 }}; язык {{ language }}"
+
+    - debug:
+          var: full_message
