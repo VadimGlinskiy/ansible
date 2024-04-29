@@ -1,0 +1,14 @@
+---
+- name: Плейбук про переменные
+  hosts: all
+  become: yes
+
+  vars:
+    message1: Hello
+    message2: World
+    secret  : fhgtr,nb,0++ffd_12399852fc
+
+  tasks:
+    - name: Печатаем переменную secret
+      debug:
+        var: secret
