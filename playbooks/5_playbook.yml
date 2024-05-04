@@ -1,0 +1,42 @@
+---
+#Использование when(условия)
+- name: Установка сервера и загрузка .html странички
+  hosts: all
+  become: yes
+
+  vars:
+    source_file: ../MyWebSite/index.html
+    destin_file: /var/www/html/
+  tasks:
+    
+    - name: Просмотр дестрибутивов
+      debug:
+        var: ansible_os_family
+
+    - name: Установка веб-сервера(apache) на RedHat
+      yum: name=httpd state=present
+      when: ansible_os_family == "RedHat"
+
+    - name: Установка веб-сервера(apache) на Debian
+      apt: name=apache2 state=present
+      when: ansible_os_family == "Debian"
+
+    - name: Копирование странички на сервер
+      copy: src={{ source_file }} dest={{ destin_file }} mode=0555
+#      notify: Перезапуск сервера
+
+    - name: Запуск сервера RedHat
+      service: name=httpd state=started enabled=yes
+      when: ansible_os_family == "RedHat"
+
+    - name: Запуск сервере Debian
+      service: name=apache2 state=started enabled=yes
+      when: ansible_os_family == "Debian"
+
+
+  handlers:
+  - name: Перезапуск сервера RedHat
+    service: name=httpd state=reloaded
+
+  - name: Перезапуск сервера Debian
+    service: name=apache2 state=reloaded

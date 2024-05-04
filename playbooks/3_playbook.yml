@@ -2,13 +2,18 @@
 #Установка веб сервера, использование переменных, модуля copy
 #Использование handlers(вызывается через notify: )
 - name: Установка сервера и загрузка .html странички
-  hosts: PROD
+  hosts: all
   become: yes
 
   vars:
     source_file: ../MyWebSite/index.html
     destin_file: /var/www/html/
   tasks:
+    
+    - name: Просмотр дестрибутивов
+      debug:
+        var: ansible_os_family
+
     - name: Установка веб-сервера(apache)
       yum: name=httpd state=present
 
