@@ -1,2 +1,45 @@
 ---
 # Использование block
+- name: Install apache and Upload Home Page
+  hosts: all
+  become: yes
+
+  vars:
+    source_file: ../MyWebSite/index.html
+    destin_file: /var/www/html/
+
+  tasks:
+  
+    - block: #REDHAT BLOCK
+        - name: Install apache for RedHat
+          yum: name=httpd state=present
+      
+        - name: Start Web Server
+          service: name=httpd state=started enabled=yes
+
+        - name: Copy Home Page to Web Server
+          copy:  src={{ source_file }} dest={{ destin_file }} mode=0555
+          notify: Restart Apache
+
+      when: ansible_os_family == "RedHat"
+
+    - block: # DEBIAN BLOCK
+        - name: Install apache for Debian
+          apt: name=apache2 state=present
+
+        - name: Start Web-Server
+          service: name=apache2 state=started enabled=yes
+
+        - name: Copy Home Page to Web Server
+          copy: src={{ source_file }} dest={{ destin_file }} mode=0555
+          notify: Restart Debian
+
+      when: ansible_os_family == "Debian"
+  
+  handlers:  
+    - name: Restart Apache
+      service: name=httpd state=reloaded
+
+    - name: Restart Debian
+      service: name=apache2 state=reloaded
+  
