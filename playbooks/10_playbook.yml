@@ -1,0 +1,14 @@
+---
+#Цикл на практике
+- name: Использование цилка на практике
+  hosts: ubuntu
+  become: yes
+
+  tasks:
+
+     - name: Установка пакетов
+       apt: name={{ item }} state=present
+       loop:
+         - tree
+         - tcpdump
+         - vim
