@@ -1,0 +1,14 @@
+---
+#Использование loop(with_Items)
+- name: Плейбук с loop
+  hosts: ubuntu
+  become: yes
+
+  tasks:
+    - name: Напечатать сообщение по всем серверам
+      debug:
+        msg: "Hello {{ item }}"
+      loop:
+        - "Vadim!"
+        - "ESP/ESM"
+        - "Translator"
