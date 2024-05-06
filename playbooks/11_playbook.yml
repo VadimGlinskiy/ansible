@@ -1,0 +1,51 @@
+---
+# Использование loop при копировании файлов и улучшение плейбука
+- name: Install apache and Upload Home Page
+  hosts: all
+  become: yes
+
+  vars:
+    source_folder: ../MyWebSite2/
+    destin_folder: /var/www/html/
+
+  tasks:
+  
+    - block: #REDHAT BLOCK
+        - name: Install apache for RedHat
+          yum: name=httpd state=present
+      
+        - name: Start Web Server
+          service: name=httpd state=started enabled=yes
+
+      when: ansible_os_family == "RedHat"
+
+    - block: # DEBIAN BLOCK
+        - name: Install apache for Debian
+          apt: name=apache2 state=present
+
+        - name: Start Web-Server
+          service: name=apache2 state=started enabled=yes
+
+      when: ansible_os_family == "Debian"
+
+    - name: Copy files to Web Server
+      copy: src={{ source_folder }}/{{ item }} dest={{ destin_folder }} mode=0555
+      loop:
+        - "index.html"
+        - "bahamas.png"
+        - "bulgaria.png"
+        - "jordan.png"
+        - "newzeland.png"
+      notify:
+        - Restart Apache
+        - Restart Debian
+  
+  handlers:  
+    - name: Restart Apache
+      service: name=httpd state=reloaded
+      when: ansible_os_family == "RedHat"
+
+    - name: Restart Debian
+      service: name=apache2 state=reloaded
+      when: ansible_os_family == "Debian"
+  
