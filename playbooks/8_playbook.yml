@@ -1,0 +1,18 @@
+---
+#Использование until
+- name: Плейбук с until
+  hosts: ubuntu
+  become: yes
+
+  tasks:
+    - name: Loop Until - использование
+      shell: echo -n Z >> myfile.txt && cat myfile.txt
+      register: output
+      delay: 2
+      retries: 10
+      until: output.stdout.find("ZZZZ") == false
+
+    - name: Печать результата работы
+      debug:
+        var: output.stdout
+      
