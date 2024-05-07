@@ -1,4 +1,4 @@
 [PROD]
-cent ansible_host=158.160.109.111 language=en
+cent ansible_host=158.160.109.111 language=en Owner=Vadim
 [STAGING]
-ubuntu ansible_host=178.154.227.218 language=ru
+ubuntu ansible_host=178.154.227.218 language=ru Owner=Clone
