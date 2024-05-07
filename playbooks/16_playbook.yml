@@ -1,0 +1,21 @@
+---
+#Плейбук для import, Include
+- name: Playbook 07.05.2024
+  hosts: all
+  become: yes
+
+  vars:
+    mytext: "Привет от Vadim"
+
+  tasks:
+  - name: Ping test
+    ping:
+
+  - name: Create folders task
+    include_tasks: create_folders_playbook.yml
+
+  - name: Create files task
+    include_tasks: create_files_playbook.yml
+
+
+    

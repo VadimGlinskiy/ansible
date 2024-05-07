@@ -1,0 +1,15 @@
+- name: Create file1
+  copy:
+    dest: /home/secret/file1.txt
+    content: |
+        Просто текст 1
+        Просто текст 2
+        Текст из переменной - {{ mytext }}
+
+- name: Create file2
+  copy:
+    dest: /home/secret/file2.txt
+    content: |
+        Просто текст 1
+        Просто текст 2
+        Текст из переменной - {{ mytext }}
