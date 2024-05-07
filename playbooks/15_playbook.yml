@@ -1,0 +1,10 @@
+---
+# Указывать хост непосредственно в вызове плейбука
+# -e "HOST=*name* *some_var=name*"
+- name: Install apache and Upload Home Page
+  hosts: "{{ HOST }}"
+  become: yes
+
+
+  roles:
+    - { role: deploy-default-apache_web, when: ansible_system == 'Linux' }
