@@ -1,0 +1,9 @@
+---
+# handlers file for deploy-default-apache_web
+- name: Restart Apache
+  service: name=httpd state=reloaded
+  when: ansible_os_family == "RedHat"
+
+- name: Restart Debian
+  service: name=apache2 state=reloaded
+  when: ansible_os_family == "Debian"

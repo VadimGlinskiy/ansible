@@ -1,0 +1,9 @@
+---
+# Первая роль
+- name: Install apache and Upload Home Page
+  hosts: all
+  become: yes
+
+
+  roles:
+    - { role: deploy-default-apache_web, when: ansible_system == 'Linux' }
