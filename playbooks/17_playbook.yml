@@ -1,0 +1,46 @@
+---
+#Использую перенаправление выполнения
+- name: Delegate Playbook
+  hosts: all
+  become: yes
+
+  vars:
+    mytext: "Привет от Vadim"
+    mytext2: "Это второй текст"
+
+  tasks:
+  - name: Ping test
+    ping:
+
+  - name: Create file1
+    copy:
+      dest: /home/file1.txt
+      content: |
+        Это файлN1
+        Английский Hello World
+        Мой текст: {{ mytext }}
+    delegate_to: ubuntu
+
+  - name: Create file2
+    copy:
+      dest: /home/file2.txt
+      content: |
+        Это файлN2
+        Английский Hello World
+        Мой текст: {{ mytext2 }}
+    run_once: true #Запустить таск только один раз(неважно на каком сервере)
+
+#Перезапуск северов
+  - name: Reboot servers
+    shell: sleep 3 && reboot now
+    async: 1
+    poll: 0
+#Ждать пока они поднимутся
+  - name: Wait till my servers will come up online
+    wait_for:
+      host: "{{ inventory_hostname }}"
+      state: started
+      delay: 5
+      timeout: 40
+    delegate_to: 127.0.0.1
+...
