@@ -1,0 +1,28 @@
+---
+# Игнорирование ошибок, перехват результата, условия выполнения
+- name: Ansible Lesson 19
+  hosts: all
+  become: yes
+  any_errors_fatal: true
+
+  tasks:
+
+#    - name: Выключать при rc > 0
+#      yum: name=treeeee state=latest
+#      ignore_errors: true
+
+#    - name: Task Number2
+#      shell: cat /home/vadim/myfile.txt
+#      register: results2
+
+#    - name: Выключать по условию
+#      shell: echo HelloWorld!
+#      register: results
+#      failed_when: results.rc == 0
+#      failed_when: "'HelloWorld' in results.stdout"
+
+#    - debug:
+#        var: results
+
+#    - name: Task Number 3
+#      shell: echo Privet Mir!!!
