@@ -1,0 +1,44 @@
+---
+# vault
+- name: Ansible
+  hosts: all
+  become: true
+
+  vars:
+    admin_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          32306530663033633763616435346636396532633431353165653661343938316639393163633761
+          6163623161666330613934396639373666626332353336380a393236346364653665376333346137
+          38363136393034303030326132326236383638396236326565643061346564343637653965666162
+          3664346661393333340a663233643633613162663630616665306635616366613035373962623830
+          3562
+    level: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          61653931303061316535633365363839326331343463313239386332373763373536643237616361
+          3332666331656330613931306533353939336534643631340a393661303563343037653561613831
+          37363130633035346166323535386166323332343232326537653362356634633466353531663263
+          3639323030663364330a383166656430393263656132383965393238376439373261383332313263
+          3131
+
+  tasks:
+  - name: Simple
+    shell: echo "Vault"
+
+  - name: Create Config File
+    copy:
+      dest: "/home/vadim/myconfig.conf"
+      content: |
+        port = 9092
+        log = 7days
+        home = /opt/kafka/bin/
+        user = admin
+        password = {{ admin_password }}
+        level = {{ level }}
+# ansible-vault encrypt
+#               decrypt
+#               view
+#               edit
+# ansible-playbook %%%.yml --ask-vault-pass %%%
+#                          --vault-password-file %%%.txt
+# ansible-vault encrypt_string (mysecretword)
+# \ echo -n "mysecretword" | ansible-vault encrypt_string
