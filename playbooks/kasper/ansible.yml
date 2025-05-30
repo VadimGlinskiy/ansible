@@ -1,0 +1,23 @@
+---
+
+- name: Копирование пакетов на хост
+  hosts: comindware-test3-manual1.int
+  become: yes
+  vars:
+    package_src: "./klnagent64_14.2.0-23324_amd64.deb"
+    package_dest: "/home/ubuntu/klnagent64_14.2.0-23324_amd64.deb"
+
+  tasks:
+
+  - name: Копирование пакета на хост
+    copy:
+      src: "{{ package_src }}"
+      dest: "{{ package_dest }}"
+      owner: "ubuntu"
+      group: "ubuntu"
+      mode: '0644'
+
+#sudo apt install ./klnagent64_14.2.0-23324_amd64.deb
+#Server - 10.4.22.215
+#Порты - все 13000
+#Проверка - /opt/kaspersky/klnagent64/bin/klnagchk
