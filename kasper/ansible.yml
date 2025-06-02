@@ -1,0 +1,122 @@
+---
+
+- name: Копирование пакетов на хост
+  hosts: comindware-test3-manual1.int
+  become: yes
+  vars:
+    KESL_SRV_LOCAL: 10.4.22.215
+    package_src_agent: "https://raw.githubusercontent.com/VadimGlinskiy/ansible/main/playbooks/kasper/klnagent64_14.2.0-23324_amd64.deb"
+    package_dest_agent: "/home/klnagent64_14.2.0-23324_amd64.deb"
+    package_src_client: "https://gitlab.com/VadimGlinsky/vadimglinsky/-/raw/main/kesl_12.0.0-6825_amd64.deb"
+    package_dest_client: "/home/kesl_12.0.0-6825_amd64.deb"
+  
+  tasks:
+
+  - name: Копирование пакета агента администрирования на хост
+    get_url:
+      url: "{{ package_src_agent }}"
+      dest: "{{ package_dest_agent }}"
+      owner: "ubuntu"
+      group: "ubuntu"
+      mode: '0644'
+
+  - name: Установка агента
+    apt:
+      deb: {{ package_dest_agent }}
+      state: present
+      update_cache: yes
+
+  - name: Create answer file
+    blockinfile:
+      path: /tmp/answers.txt
+      create: yes
+      block:  |
+        KLNAGENT_SERVER={{ KESL_SRV_LOCAL }}
+        KLNAGENT_AUTOINSTALL=Y
+        EULA_ACCEPTED=Y
+        KLNAGENT_PORT=13000
+        KLNAGENT_USESSL=13000
+        KLNAGENT_USESSL=1
+        KLNAGENT_GW_MODE=0
+
+  - name: run postinstall.pl for klnagent64
+    shell: |
+      export KLAUTOANSWERS=/tmp/answers.txt
+      /opt/kaspersky/klnagent64/lib/bin/setup/postinstall.pl --autoinstall=$KLAUTOANSWERS
+
+
+  - name: Проверка работы агента
+    shell: "/opt/kaspersky/klnagent64/bin/klnagchk"
+
+  
+  - name: Копирование пакета клиента на хост
+    get_url:
+      url: "{{ package_src_client }}"
+      dest: "{{ package_dest_client }}"
+      owner: "ubuntu"
+      group: "ubuntu"
+      mode: '0644'
+
+  - name: Установка агента
+    apt:
+      deb: {{ package_dest_client }}
+      state: present
+      update_cache: yes
+
+  - name: create autoinstall file
+    blockinfile:
+      path: /tmp/autoinstall.txt
+      create: yes
+      block: |
+        EULA_AGREED=Yes
+        PRIVACY_POLICY_AGREED=Yes
+        USE_KSN=No
+  
+  - name: run postinstall.pl
+    shell: "/opt/kaspersky/kesl/bin/kesl-setup.pl --autoinstall=/tmp/autoinstall.txt"
+    ignore_errors: yes
+
+  - name: Connection fix
+    shell: "/opt/kaspersky/klnagent64/bin/klmover -address {{ KESL_SRV_LOCAL }}"
+    become: yes
+
+  - name: Рестарт kesl
+    service:
+      name: kesl
+      state: restarted
+
+  - name: Pause for 30 seconds
+    ansible.builtin.pause:
+      seconds: 30
+      name: klnagent64
+      state: restarted
+
+  - name: Pause for 1 minutes
+    ansible.builtin.pause:
+      minutes: 1
+
+  - name: restart kesl
+    service:
+      name: kesl
+      state: restarted
+
+  - name: Pause for 30 seconds
+    ansible.builtin.pause:
+      seconds: 30
+
+  - name: restart klnagent64
+    service:
+      name: klnagent64
+      state: restarted
+
+
+#установка агента
+#sudo apt install ./klnagent64_14.2.0-23324_amd64.deb
+#запустить скрипт из вывода установки
+#Server - 10.4.22.215
+#Порты - все 13000
+#Проверка - /opt/kaspersky/klnagent64/bin/klnagchk
+
+#установка клиента
+#sudo apt install ./kesl_12.0.0-6825_amd64.deb
+#/opt/kaspersky/kesl/bin/kesl-setup.pl
