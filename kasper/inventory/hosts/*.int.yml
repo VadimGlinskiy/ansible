@@ -1,0 +1,8 @@
+---
+
+all:
+  hosts:
+    *.int:
+      ansible_host: *
+      ansible_ssh_user: *
+      ansible_port: 22
