@@ -1,10 +1,10 @@
 ---
 
 - name: Копирование пакетов на хост
-  hosts: ewsil-prod-vm0.int
+  hosts: 
   become: yes
   vars:
-    KESL_SRV_LOCAL: 10.4.22.152
+    KESL_SRV_LOCAL: 
     package_src_agent: "https://raw.githubusercontent.com/VadimGlinskiy/ansible/main/playbooks/kasper/klnagent64_14.2.0-23324_amd64.deb"
     package_dest_agent: "/home/klnagent64_14.2.0-23324_amd64.deb"
     package_src_client: "https://gitlab.com/VadimGlinsky/vadimglinsky/-/raw/main/kesl_12.0.0-6825_amd64.deb"
@@ -91,7 +91,7 @@
 #установка агента
 #sudo apt install ./klnagent64_14.2.0-23324_amd64.deb
 #запустить скрипт из вывода установки
-#Server - 10.4.22.152 # остается для истории - 10.4.22.215
+#Server - {{ KESL_SRV_LOCAL }} # остается для истории 
 #Server SSL ports: '13000'
 #Server ports: '14000'
 #Проверка - /opt/kaspersky/klnagent64/bin/klnagchk
