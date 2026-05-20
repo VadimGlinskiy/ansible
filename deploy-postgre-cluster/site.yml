@@ -1,0 +1,22 @@
+---
+- name: Deploy Consul cluster
+  hosts: consul_servers
+  become: true
+  roles:
+    - role: consul
+      tags: [consul]
+
+- name: Deploy PostgreSQL
+  hosts: postgres_servers
+  become: true
+  roles:
+    - role: postgresql
+      tags: [postgresql]
+
+- name: Deploy Patroni (HA management)
+  hosts: postgres_servers
+  become: true
+  roles:
+    - role: patroni
+      tags: [patroni]
+  # Примечание: Patroni запускается после PostgreSQL и требует работающий Consul
