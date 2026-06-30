@@ -1,2 +1,12 @@
 ---
 # tasks file for ssh-keys
+- name: Настройка SSH
+  hosts: all
+  become: yes
+  tasks:
+    - name: Добавление SSH ключа
+      authorized_key:
+        user: "{{ ansible_user | default('ubuntu') }}"
+        key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
+        state: present
+      ignore_errors: yes
