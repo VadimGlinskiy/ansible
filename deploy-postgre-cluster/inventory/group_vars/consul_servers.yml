@@ -6,4 +6,4 @@ consul_autopilot_enable: true
 consul_group_name: "consul_servers"
 consul_iptables_enable: false
 consul_force_install: true
-consul_client_address: "{{ ansible_default_ipv4.address }}"
+consul_client_address: "0.0.0.0"
