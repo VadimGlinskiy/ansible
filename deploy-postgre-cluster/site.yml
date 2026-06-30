@@ -8,7 +8,7 @@
       tags: [consul]
 
 - name: Deploy PostgreSQL
-  hosts: postgres_servers
+  hosts: postgresql_servers
   become: true
   roles:
     - role: postgresql
