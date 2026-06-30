@@ -18,5 +18,8 @@ Consul регулирует, кто является мастером, с пом
 
 Требования:
 - На всех серверах должен быть установлен openssh-server
- - На всех серверах echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/ubuntu-nopasswd
-
+- На всех серверах echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/ubuntu-nopasswd
+- Локально у себя
+    sudo apt update
+    sudo apt install python3-virtualenv -y
+    Включенный ВПН
