@@ -1,5 +1,4 @@
 ---
-postgresql_version: 14
 postgresql_databases:
   - name: myapp_db
 postgresql_users:
