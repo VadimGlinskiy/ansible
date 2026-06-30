@@ -1,19 +1,4 @@
 ---
-- name: Configure servers
-  hosts: all
-  become: true
-  roles:
-    - role: configure
-      tags: [configure]
-
-
-- name: SSH keys
-  hosts: all
-  become: true
-  roles:
-    - role: ssh-keys
-      tags: [ssh-keys]
-
 - name: Deploy Consul cluster
   hosts: consul_servers
   become: true
@@ -29,7 +14,7 @@
       tags: [postgresql]
 
 - name: Deploy Patroni (HA management)
-  hosts: postgres_servers
+  hosts: patroni_servers
   become: true
   roles:
     - role: patroni

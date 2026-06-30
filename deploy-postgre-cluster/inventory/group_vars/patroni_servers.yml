@@ -1,0 +1,4 @@
+---
+patroni_dcs_exists: true
+patroni_dcs_type: consul
+patroni_consul_host: "{{ groups['consul_servers'] | map('extract', hostvars, 'ansible_host') | join(',') }}"
