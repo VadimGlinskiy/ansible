@@ -1,4 +1,5 @@
 ---
+
 - name: Deploy Consul cluster
   hosts: consul_servers
   become: true
