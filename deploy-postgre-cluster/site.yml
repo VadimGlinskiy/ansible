@@ -1,4 +1,12 @@
 ---
+- name: Configure servers
+  hosts: all
+  become: true
+  roles:
+    - role: configure
+      tags: [configure]
+
+
 - name: Deploy Consul cluster
   hosts: consul_servers
   become: true
